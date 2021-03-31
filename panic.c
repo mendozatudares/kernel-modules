@@ -4,46 +4,28 @@
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
-#include <linux/interrupt.h>
+#include <linux/timer.h>
 
-const int IRQ = 2;
-const int ASM = 50;
+static struct timer_list panic_timer;
 
-static void null_reference(void)
+static int __init test_init(void)
+{
+        printk("Hello World\n");
+	return 0;
+}
+
+static void null_reference(struct timer_list *unused)
 {
         int *p = NULL;
         int  e = *p;
         printk("%d\n", e);
 }
 
-static irqreturn_t handle_irq(int irq, void *dev_id)
-{
-        null_reference();
-        return IRQ_HANDLED;
-}
-
-static int __init test_init(void)
-{
-        int ret;
-
-        printk("Hello World\n");
-
-        ret = request_irq(IRQ, handle_irq, 0, "panic", NULL);
-
-        if (ret) {
-                printk("ERROR: Cannot request IRQ %d", IRQ);
-                printk(" - code %d , EIO %d , EINVAL %d\n", ret, EIO, EINVAL);
-                return -1;
-        }
-
-	return 0;
-}
-
 static void __exit test_exit(void)
 {
 	printk("Goodbye World\n");
-        asm("int %0" : : "i" (ASM));
-        free_irq(IRQ, 0);
+        timer_setup(&panic_timer, null_reference, 0);
+        mod_timer(&panic_timer, jiffies + 2 * HZ);
 }
 
 
