@@ -1,0 +1,7 @@
+#!/bin/bash
+
+make clean && make all
+sudo insmod oops.ko
+sudo insmod panic.ko
+sudo insmod triple.ko
+dmesg | tail -n 10

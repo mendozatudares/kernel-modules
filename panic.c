@@ -10,7 +10,7 @@ static struct timer_list panic_timer;
 
 static int __init test_init(void)
 {
-        printk("Hello World\n");
+        printk("Hello World from panic\n");
 	return 0;
 }
 
@@ -23,7 +23,7 @@ static void null_reference(struct timer_list *unused)
 
 static void __exit test_exit(void)
 {
-	printk("Goodbye World\n");
+	printk("Goodbye World from panic\n");
         timer_setup(&panic_timer, null_reference, 0);
         mod_timer(&panic_timer, jiffies + 2 * HZ);
 }

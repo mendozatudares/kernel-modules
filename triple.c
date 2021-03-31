@@ -14,7 +14,7 @@ typedef struct __attribute__((__packed__)) idtr {
 
 static int __init test_init(void)
 {
-        printk("Hello World\n");
+        printk("Hello World from triple\n");
 	return 0;
 }
 
@@ -24,7 +24,7 @@ static void load_idtr(void* idtr) {
 
 static void __exit test_exit(void)
 {
-	printk("Goodbye World\n");
+	printk("Goodbye World from triple\n");
         void* idtr = kmalloc(sizeof(idtr_t), GFP_KERNEL);
         ((idtr_t*)idtr)->limit = 0;
         load_idtr(idtr);

@@ -7,7 +7,7 @@
 
 static int __init test_init(void)
 {
-        printk("Hello World\n");
+        printk("Hello World from oops\n");
 	return 0;
 }
 
@@ -20,7 +20,7 @@ static void null_reference(void)
 
 static void __exit test_exit(void)
 {
-	printk("Goodbye World\n");
+	printk("Goodbye World from oops\n");
         null_reference();
 }
 
