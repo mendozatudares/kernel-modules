@@ -6,7 +6,8 @@
 #include <linux/module.h>
 #include <linux/interrupt.h>
 
-int IRQ = 68;
+const int IRQ = 2;
+const int ASM = 50;
 
 static void null_reference(void)
 {
@@ -32,6 +33,7 @@ static int __init test_init(void)
         if (ret) {
                 printk("ERROR: Cannot request IRQ %d", IRQ);
                 printk(" - code %d , EIO %d , EINVAL %d\n", ret, EIO, EINVAL);
+                return -1;
         }
 
 	return 0;
@@ -40,6 +42,7 @@ static int __init test_init(void)
 static void __exit test_exit(void)
 {
 	printk("Goodbye World\n");
+        asm("int %0" : : "i" (ASM));
         free_irq(IRQ, 0);
 }
 
